@@ -5,13 +5,14 @@ import {ERC20} from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
 
 contract AIBasedLockedToken is ERC20, Ownable {
+
+    constructor(address initialOwner) ERC20("AIBLockedToken", "AIBL") Ownable(initialOwner) {}
+
     mapping(address => bool) public whitelist;
     mapping(address => bool) public hasClaimed;
     uint256 public totalClaims;
     uint256 public constant MAX_CLAIMS = 100;
     uint256 public constant CLAIM_AMOUNT = 10 * 10**18;
-
-    constructor(address initialOwner) ERC20("AIBLockedToken", "AIBL") Ownable(initialOwner) {}
 
 
     function _update(address from, address to, uint256 value) internal override {
