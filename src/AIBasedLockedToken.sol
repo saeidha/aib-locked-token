@@ -11,6 +11,8 @@ contract AIBasedLockedToken is ERC20, Ownable {
     uint256 public constant MAX_CLAIMS = 100;
     uint256 public constant CLAIM_AMOUNT = 10 * 10**18;
 
+    constructor(address initialOwner) ERC20("AIBLockedToken", "AIBL") Ownable(initialOwner) {}
+
 
     function _update(address from, address to, uint256 value) internal override {
         require(from == address(0) || to == address(0), "Token is non-transferable");
