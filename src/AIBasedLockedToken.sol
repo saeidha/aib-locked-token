@@ -13,17 +13,12 @@ contract AIBasedLockedToken is ERC20, Ownable {
 
     constructor(address initialOwner) ERC20("AIBLockedToken", "AIBL") Ownable(initialOwner) {}
 
-    function addToWhitelist(address[] calldata addresses) external onlyOwner {
-        for (uint256 i = 0; i < addresses.length; i++) {
-            whitelist[addresses[i]] = true;
-        }
-    }
 
     function _update(address from, address to, uint256 value) internal override {
         require(from == address(0) || to == address(0), "Token is non-transferable");
         super._update(from, to, value);
     }
-    
+
     function claim() external {
         require(whitelist[msg.sender], "Not whitelisted");
         require(!hasClaimed[msg.sender], "Already claimed");
@@ -34,5 +29,10 @@ contract AIBasedLockedToken is ERC20, Ownable {
         _mint(msg.sender, CLAIM_AMOUNT);
     }
 
+    function addToWhitelist(address[] calldata addresses) external onlyOwner {
+        for (uint256 i = 0; i < addresses.length; i++) {
+            whitelist[addresses[i]] = true;
+        }
+    }
 
 }
