@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 import {ERC20} from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
 
-contract AIBasedLockedToken is ERC20, Ownable {
+contract AIBLockedXpToken is ERC20, Ownable {
 
     uint256 public maxSupply;
     uint256 public totalClaims;
@@ -13,7 +13,7 @@ contract AIBasedLockedToken is ERC20, Ownable {
     mapping(address => bool) public whitelist;
     mapping(address => bool) public hasClaimed;
 
-    constructor(address initialOwner) ERC20("AIBLockedToken", "AIBL") Ownable(initialOwner) {
+    constructor(address initialOwner) ERC20("AIBLockedXpToken", "AIBLXP") Ownable(initialOwner) {
         maxSupply = MAX_CLAIMS * CLAIM_AMOUNT;
     }
 
