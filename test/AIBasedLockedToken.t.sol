@@ -17,9 +17,10 @@ contract AIBasedLockedTokenTest is Test {
     }
 
     function test_initial_state() public {
-        assertEq(token.name(), "aibasedLockedToken");
+        assertEq(token.name(), "AIBasedLockedToken");
         assertEq(token.symbol(), "AIBL");
         assertEq(token.owner(), owner);
+        assertEq(token.maxSupply(), 100 * 10 * 10**18);
     }
 
     function test_add_to_whitelist() public {
@@ -70,19 +71,10 @@ contract AIBasedLockedTokenTest is Test {
         token.claim();
     }
 
-    function test_claim_limit() public {
-        address[] memory users = new address[](100);
-        for (uint i = 0; i < 100; i++) {
-            users[i] = address(uint160(i + 1));
-        }
-
+    function test_max_supply_limit() public {
+        // Set max supply to current total supply
         vm.prank(owner);
-        token.addToWhitelist(users);
-
-        for (uint i = 0; i < 100; i++) {
-            vm.prank(address(uint160(i + 1)));
-            token.claim();
-        }
+        token.updateMaxSupply(token.totalSupply());
 
         address[] memory newUser = new address[](1);
         newUser[0] = user1;
@@ -90,7 +82,7 @@ contract AIBasedLockedTokenTest is Test {
         token.addToWhitelist(newUser);
 
         vm.prank(user1);
-        vm.expectRevert("Claim limit reached");
+        vm.expectRevert("Max supply reached");
         token.claim();
     }
 
@@ -107,5 +99,35 @@ contract AIBasedLockedTokenTest is Test {
         vm.prank(user1);
         vm.expectRevert("Token is non-transferable");
         token.transfer(user2, 10 * 10**18);
+    }
+
+    function test_update_max_supply() public {
+        uint256 newMaxSupply = 200 * 10**18;
+        vm.prank(owner);
+        token.updateMaxSupply(newMaxSupply);
+        assertEq(token.maxSupply(), newMaxSupply);
+    }
+
+    function test_update_max_supply_not_owner() public {
+        uint256 newMaxSupply = 200 * 10**18;
+        vm.prank(user1);
+        vm.expectRevert("Ownable: caller is not the owner");
+        token.updateMaxSupply(newMaxSupply);
+    }
+
+    function test_update_max_supply_less_than_total_supply() public {
+        address[] memory users = new address[](1);
+        users[0] = user1;
+
+        vm.prank(owner);
+        token.addToWhitelist(users);
+
+        vm.prank(user1);
+        token.claim();
+
+        uint256 newMaxSupply = 5 * 10**18; // Less than total supply
+        vm.prank(owner);
+        vm.expectRevert("New max supply is less than total supply");
+        token.updateMaxSupply(newMaxSupply);
     }
 }
