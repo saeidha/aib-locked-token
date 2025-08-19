@@ -17,7 +17,7 @@ contract AIBasedLockedTokenTest is Test {
     }
 
     function test_initial_state() public {
-        assertEq(token.name(), "AIBasedLockedToken");
+        assertEq(token.name(), "AIBLockedToken");
         assertEq(token.symbol(), "AIBL");
         assertEq(token.owner(), owner);
         assertEq(token.maxSupply(), 100 * 10 * 10**18);
@@ -73,8 +73,9 @@ contract AIBasedLockedTokenTest is Test {
 
     function test_max_supply_limit() public {
         // Set max supply to current total supply
-        vm.prank(owner);
+        vm.startPrank(owner);
         token.updateMaxSupply(token.totalSupply());
+        vm.stopPrank();
 
         address[] memory newUser = new address[](1);
         newUser[0] = user1;
@@ -111,7 +112,7 @@ contract AIBasedLockedTokenTest is Test {
     function test_update_max_supply_not_owner() public {
         uint256 newMaxSupply = 200 * 10**18;
         vm.prank(user1);
-        vm.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert(abi.encodeWithSelector(bytes4(keccak256("OwnableUnauthorizedAccount(address)")), user1));
         token.updateMaxSupply(newMaxSupply);
     }
 
