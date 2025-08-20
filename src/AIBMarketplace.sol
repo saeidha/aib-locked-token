@@ -141,4 +141,11 @@ function buyNFT(address _nftContract, uint256 _tokenId) external payable whenNot
         IERC721(_nftContract).safeTransferFrom(address(this), msg.sender, _tokenId);
         emit NFTListingCancelled(msg.sender, _nftContract, _tokenId);
     }
+
+    /**
+     * @notice Updates the price of a listed NFT.
+     * @param _nftContract The address of the NFT contract.
+     * @param _tokenId The ID of the token.
+     * @param _newPrice The new price for the NFT in wei.
+     */
 }
