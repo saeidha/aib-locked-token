@@ -102,4 +102,11 @@ contract AIBNFTMarketplace is Pausable, Ownable, ERC721Holder {
         emit NFTListed(msg.sender, _nftContract, _tokenId, _price);
     }
 
+    /**
+     * @notice Buys a listed NFT.
+     * @dev Buyer must send ETH equal to or greater than the listing price.
+     * @param _nftContract The address of the NFT contract.
+     * @param _tokenId The ID of the token to buy.
+     */
+
 }
