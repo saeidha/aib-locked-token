@@ -1,0 +1,22 @@
+// File: test/AIBNFTMarketplace.t.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "forge-std/Test.sol";
+import "../src/AIBNFTMarketplace.sol"; // Adjust path if needed
+import "../src/MockNFT.sol"; // Adjust path if needed
+
+contract AIBNFTMarketplaceTest is Test {
+    //=========== State Variables ===========//
+    AIBNFTMarketplace marketplace;
+    MockNFT mockNft;
+
+    address owner = makeAddr("owner");
+    address seller = makeAddr("seller");
+    address buyer = makeAddr("buyer");
+    
+    uint256 constant LISTING_FEE = 0.01 ether;
+    uint256 constant NFT_PRICE = 1 ether;
+    uint256 constant TOKEN_ID = 0;
+
+}
