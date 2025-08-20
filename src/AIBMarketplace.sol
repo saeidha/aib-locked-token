@@ -108,5 +108,22 @@ contract AIBNFTMarketplace is Pausable, Ownable, ERC721Holder {
      * @param _nftContract The address of the NFT contract.
      * @param _tokenId The ID of the token to buy.
      */
+function buyNFT(address _nftContract, uint256 _tokenId) external payable whenNotPaused isListed(_nftContract, _tokenId) {
+        Listing memory listing = s_listings[_nftContract][_tokenId];
+        require(msg.value >= listing.price, "Insufficient funds to purchase.");
 
+        delete s_listings[_nftContract][_tokenId];
+
+        (bool success, ) = listing.seller.call{value: listing.price}("");
+        require(success, "Failed to transfer funds to seller.");
+
+        IERC721(_nftContract).safeTransferFrom(address(this), msg.sender, _tokenId);
+
+        // Refund excess ETH, if any
+        if (msg.value > listing.price) {
+            (bool refundSuccess, ) = msg.sender.call{value: msg.value - listing.price}("");
+            // We do not require refund success to prevent transaction failure
+        }
+        emit NFTSold(listing.seller, msg.sender, _nftContract, _tokenId, listing.price);
+    }
 }
