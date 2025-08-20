@@ -142,4 +142,18 @@ contract AIBNFTMarketplaceTest is Test {
         assertEq(listedPrice, 0, "Listing should be deleted");
     }
 
+// --- Price Update Tests ---
+    function test_UpdatePrice_Success() public {
+        uint256 newPrice = 2 ether;
+        vm.prank(seller);
+        marketplace.listNFT{value: LISTING_FEE}(address(mockNft), TOKEN_ID, NFT_PRICE);
+
+        vm.expectEmit(true, true, true, true);
+        emit NFTPriceUpdated(seller, address(mockNft), TOKEN_ID, newPrice);
+        marketplace.updatePrice(address(mockNft), TOKEN_ID, newPrice);
+
+        ( , uint256 listedPrice) = marketplace.getListing(address(mockNft), TOKEN_ID);
+        assertEq(listedPrice, newPrice, "Price should be updated");
+    }
+
 }
