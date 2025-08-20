@@ -78,8 +78,7 @@ contract AIBNFTMarketplace is Pausable, Ownable, ERC721Holder {
         s_listingFee = initialListingFee;
     }
 
-//=========== Core Marketplace Functions ===========//
-
+    //=========== Core Marketplace Functions ===========//
     /**
      * @notice Lists an NFT for sale. The contract must be approved to manage the NFT.
      * @dev Locks the NFT in the contract until sale or cancellation.
@@ -87,5 +86,20 @@ contract AIBNFTMarketplace is Pausable, Ownable, ERC721Holder {
      * @param _tokenId The ID of the token to list.
      * @param _price The selling price in wei (must be > 0).
      */
+
+    function listNFT(address _nftContract, uint256 _tokenId, uint256 _price) external payable whenNotPaused {
+        require(_price > 0, "Price must be greater than zero.");
+        require(msg.value == s_listingFee, "Incorrect listing fee paid.");
+
+        IERC721 nft = IERC721(_nftContract);
+        require(nft.ownerOf(_tokenId) == msg.sender, "You do not own this NFT.");
+        require(nft.getApproved(_tokenId) == address(this), "Marketplace not approved for this NFT.");
+
+        // Lock the NFT by transferring it to this contract
+        nft.safeTransferFrom(msg.sender, address(this), _tokenId);
+
+        s_listings[_nftContract][_tokenId] = Listing(msg.sender, _price);
+        emit NFTListed(msg.sender, _nftContract, _tokenId, _price);
+    }
 
 }
