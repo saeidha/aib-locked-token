@@ -128,4 +128,18 @@ contract AIBNFTMarketplaceTest is Test {
         marketplace.cancelListing(address(mockNft), TOKEN_ID);
     }
 
+    function test_CancelListing_Success() public {
+        vm.prank(seller);
+        marketplace.listNFT{value: LISTING_FEE}(address(mockNft), TOKEN_ID, NFT_PRICE);
+        
+        vm.prank(seller);
+        vm.expectEmit(true, true, true, true);
+        emit NFTListingCancelled(seller, address(mockNft), TOKEN_ID);
+        marketplace.cancelListing(address(mockNft), TOKEN_ID);
+        
+        assertEq(mockNft.ownerOf(TOKEN_ID), seller, "NFT should be returned to seller");
+        ( , uint256 listedPrice) = marketplace.getListing(address(mockNft), TOKEN_ID);
+        assertEq(listedPrice, 0, "Listing should be deleted");
+    }
+
 }
