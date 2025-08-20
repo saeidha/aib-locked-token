@@ -175,6 +175,9 @@ function buyNFT(address _nftContract, uint256 _tokenId) external payable whenNot
     function pause() external onlyOwner {
         _pause();
     }
-    
+    function unpause() external onlyOwner {
+        _unpause();
+    }
+
 
 }
