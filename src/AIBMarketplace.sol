@@ -12,4 +12,10 @@ import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
  */
 contract AIBNFTMarketplace is Pausable, Ownable, ERC721Holder {
 
+//=========== State Variables ===========//
+
+    struct Listing {
+        address seller;
+        uint256 price;
+    }
 }
