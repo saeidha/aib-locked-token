@@ -40,4 +40,12 @@ contract AIBNFTMarketplaceTest is Test {
         vm.deal(buyer, 5 ether);
     }
 
+     //=========== Test Functions ===========//
+
+    // --- Deployment Tests ---
+    function test_Deployment_SetsCorrectOwnerAndFee() public {
+        assertEq(marketplace.owner(), owner, "Owner should be set correctly");
+        assertEq(marketplace.getListingFee(), LISTING_FEE, "Listing fee should be set correctly");
+    }
+
 }
