@@ -99,6 +99,23 @@ contract AIBNFTMarketplaceTest is Test {
         vm.expectRevert("Insufficient funds to purchase.");
         marketplace.buyNFT{value: NFT_PRICE - 0.1 ether}(address(mockNft), TOKEN_ID);
     }
-    
+
+    function test_BuyNFT_Success() public {
+        vm.prank(seller);
+        marketplace.listNFT{value: LISTING_FEE}(address(mockNft), TOKEN_ID, NFT_PRICE);
+        
+        uint256 sellerInitialBalance = seller.balance;
+
+        vm.prank(buyer);
+        vm.expectEmit(true, true, true, true);
+        emit NFTSold(seller, buyer, address(mockNft), TOKEN_ID, NFT_PRICE);
+        marketplace.buyNFT{value: NFT_PRICE}(address(mockNft), TOKEN_ID);
+
+        assertEq(mockNft.ownerOf(TOKEN_ID), buyer, "Buyer should now own the NFT");
+        assertEq(seller.balance, sellerInitialBalance + NFT_PRICE, "Seller should receive the funds");
+        
+        ( , uint256 listedPrice) = marketplace.getListing(address(mockNft), TOKEN_ID);
+        assertEq(listedPrice, 0, "Listing should be deleted after sale");
+    } 
 
 }
