@@ -190,4 +190,7 @@ function buyNFT(address _nftContract, uint256 _tokenId) external payable whenNot
         return s_listingFee;
     }
 
+    function getContractBalance() external view onlyOwner returns (uint256) {
+            return address(this).balance;
+        }
 }
