@@ -78,5 +78,14 @@ contract AIBNFTMarketplace is Pausable, Ownable, ERC721Holder {
         s_listingFee = initialListingFee;
     }
 
+//=========== Core Marketplace Functions ===========//
+
+    /**
+     * @notice Lists an NFT for sale. The contract must be approved to manage the NFT.
+     * @dev Locks the NFT in the contract until sale or cancellation.
+     * @param _nftContract The address of the ERC721 token contract.
+     * @param _tokenId The ID of the token to list.
+     * @param _price The selling price in wei (must be > 0).
+     */
 
 }
