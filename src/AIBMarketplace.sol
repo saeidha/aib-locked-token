@@ -52,4 +52,8 @@ contract AIBNFTMarketplace is Pausable, Ownable, ERC721Holder {
         uint256 indexed tokenId,
         uint256 newPrice
     );
+
+    event ListingFeeUpdated(uint256 newFee);
+    event FeesWithdrawn(address indexed owner, uint256 amount);
+
 }
