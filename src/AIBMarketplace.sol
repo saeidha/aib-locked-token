@@ -65,4 +65,11 @@ contract AIBNFTMarketplace is Pausable, Ownable, ERC721Holder {
         _;
     }
 
+    modifier isSeller(address nftContract, uint256 tokenId, address spender) {
+        if (s_listings[nftContract][tokenId].seller != spender) {
+            revert("You are not the seller of this NFT.");
+        }
+        _;
+    }
+
 }
