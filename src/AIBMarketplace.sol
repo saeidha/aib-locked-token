@@ -72,4 +72,11 @@ contract AIBNFTMarketplace is Pausable, Ownable, ERC721Holder {
         _;
     }
 
+    //=========== Constructor ===========//
+
+    constructor(uint256 initialListingFee) Ownable(msg.sender) {
+        s_listingFee = initialListingFee;
+    }
+
+
 }
