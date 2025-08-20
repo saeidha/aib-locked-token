@@ -19,4 +19,25 @@ contract AIBNFTMarketplaceTest is Test {
     uint256 constant NFT_PRICE = 1 ether;
     uint256 constant TOKEN_ID = 0;
 
+    //=========== Setup ===========//
+
+    /// @notice This function runs before each test case
+    function setUp() public {
+        // Deploy contracts as the owner
+        vm.startPrank(owner);
+        mockNft = new MockNFT();
+        marketplace = new AIBNFTMarketplace(LISTING_FEE);
+        vm.stopPrank();
+
+        // Mint an NFT (Token ID 0) to the seller
+        mockNft.mint(seller);
+
+        // Seller must approve the marketplace to manage the NFT
+        vm.prank(seller);
+        mockNft.approve(address(marketplace), TOKEN_ID);
+
+        // Give the buyer some ETH for tests
+        vm.deal(buyer, 5 ether);
+    }
+
 }
