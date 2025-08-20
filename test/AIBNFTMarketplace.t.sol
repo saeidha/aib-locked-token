@@ -89,6 +89,16 @@ contract AIBNFTMarketplaceTest is Test {
         assertEq(listedSeller, seller);
         assertEq(listedPrice, NFT_PRICE);
     }
+
+    // --- Buying Tests ---
+    function test_Fail_BuyNFT_InsufficientFunds() public {
+        vm.prank(seller);
+        marketplace.listNFT{value: LISTING_FEE}(address(mockNft), TOKEN_ID, NFT_PRICE);
+
+        vm.prank(buyer);
+        vm.expectRevert("Insufficient funds to purchase.");
+        marketplace.buyNFT{value: NFT_PRICE - 0.1 ether}(address(mockNft), TOKEN_ID);
+    }
     
 
 }
