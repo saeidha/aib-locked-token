@@ -56,7 +56,7 @@ contract AIBNFTMarketplace is Pausable, Ownable, ERC721Holder {
     event ListingFeeUpdated(uint256 newFee);
     event FeesWithdrawn(address indexed owner, uint256 amount);
 
-    //=========== Modifiers ===========//
+    //=========== Modifiers ==========//
 
     modifier isListed(address nftContract, uint256 tokenId) {
         if (s_listings[nftContract][tokenId].price <= 0) {
