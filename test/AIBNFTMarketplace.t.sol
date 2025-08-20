@@ -59,5 +59,10 @@ contract AIBNFTMarketplaceTest is Test {
         marketplace.listNFT{value: LISTING_FEE}(address(mockNft), TOKEN_ID, NFT_PRICE);
     }
 
+    function test_Fail_ListNFT_WithoutListingFee() public {
+        vm.prank(seller);
+        vm.expectRevert("Incorrect listing fee paid.");
+        marketplace.listNFT(address(mockNft), TOKEN_ID, NFT_PRICE);
+    }
 
 }
