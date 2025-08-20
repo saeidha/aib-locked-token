@@ -48,4 +48,16 @@ contract AIBNFTMarketplaceTest is Test {
         assertEq(marketplace.getListingFee(), LISTING_FEE, "Listing fee should be set correctly");
     }
 
+        // --- Listing Tests ---
+    function test_Fail_ListNFT_WhenPaused() public {
+        vm.prank(owner);
+        marketplace.pause();
+
+        vm.prank(seller);
+        bytes memory expectedRevert = abi.encodeWithSelector(Pausable.EnforcedPause.selector);
+        vm.expectRevert(expectedRevert);
+        marketplace.listNFT{value: LISTING_FEE}(address(mockNft), TOKEN_ID, NFT_PRICE);
+    }
+
+
 }
