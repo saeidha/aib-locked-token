@@ -73,4 +73,22 @@ contract AIBNFTMarketplaceTest is Test {
         marketplace.listNFT{value: LISTING_FEE}(address(mockNft), newTokenId, NFT_PRICE);
     }
 
+    function test_ListNFT_Success() public {
+        vm.prank(seller);
+        
+        vm.expectEmit(true, true, true, true);
+        emit NFTListed(seller, address(mockNft), TOKEN_ID, NFT_PRICE);
+        
+        marketplace.listNFT{value: LISTING_FEE}(address(mockNft), TOKEN_ID, NFT_PRICE);
+
+        // Verify NFT is now owned (locked) by the marketplace
+        assertEq(mockNft.ownerOf(TOKEN_ID), address(marketplace), "Marketplace should own the NFT");
+        
+        // Verify listing details
+        (address listedSeller, uint256 listedPrice) = marketplace.getListing(address(mockNft), TOKEN_ID);
+        assertEq(listedSeller, seller);
+        assertEq(listedPrice, NFT_PRICE);
+    }
+    
+
 }
