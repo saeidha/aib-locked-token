@@ -156,4 +156,12 @@ function buyNFT(address _nftContract, uint256 _tokenId) external payable whenNot
         emit NFTPriceUpdated(msg.sender, _nftContract, _tokenId, _newPrice);
     }
 
+    //=========== Admin Functions ===========//
+    
+    function updateListingFee(uint256 _newFee) external onlyOwner {
+        s_listingFee = _newFee;
+        emit ListingFeeUpdated(_newFee);
+    }
+
+
 }
