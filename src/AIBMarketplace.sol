@@ -134,4 +134,11 @@ function buyNFT(address _nftContract, uint256 _tokenId) external payable whenNot
      * @param _nftContract The address of the NFT contract.
      * @param _tokenId The ID of the token to delist.
      */
+    function cancelListing(address _nftContract, uint256 _tokenId) 
+        external whenNotPaused isListed(_nftContract, _tokenId) isSeller(_nftContract, _tokenId, msg.sender) 
+    {
+        delete s_listings[_nftContract][_tokenId];
+        IERC721(_nftContract).safeTransferFrom(address(this), msg.sender, _tokenId);
+        emit NFTListingCancelled(msg.sender, _nftContract, _tokenId);
+    }
 }
