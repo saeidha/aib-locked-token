@@ -171,4 +171,20 @@ contract AIBNFTMarketplaceTest is Test {
         marketplace.pause();
     }
 
+    function test_Admin_WithdrawFees_Success() public {
+        vm.prank(seller);
+        marketplace.listNFT{value: LISTING_FEE}(address(mockNft), TOKEN_ID, NFT_PRICE);
+        
+        uint256 ownerInitialBalance = owner.balance;
+        uint256 contractBalance = address(marketplace).balance;
+        
+        assertEq(contractBalance, LISTING_FEE);
+        
+        vm.prank(owner);
+        marketplace.withdrawFees();
+        
+        assertEq(owner.balance, ownerInitialBalance + contractBalance, "Owner should receive the fees");
+        assertEq(address(marketplace).balance, 0, "Marketplace balance should be zero");
+    }
+
 }
