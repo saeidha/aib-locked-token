@@ -118,4 +118,14 @@ contract AIBNFTMarketplaceTest is Test {
         assertEq(listedPrice, 0, "Listing should be deleted after sale");
     } 
 
+    // --- Cancellation Tests ---
+    function test_Fail_CancelListing_NotSeller() public {
+        vm.prank(seller);
+        marketplace.listNFT{value: LISTING_FEE}(address(mockNft), TOKEN_ID, NFT_PRICE);
+
+        vm.prank(buyer); // A different address tries to cancel
+        vm.expectRevert("You are not the seller of this NFT.");
+        marketplace.cancelListing(address(mockNft), TOKEN_ID);
+    }
+
 }
