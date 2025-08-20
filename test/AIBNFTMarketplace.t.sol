@@ -65,4 +65,12 @@ contract AIBNFTMarketplaceTest is Test {
         marketplace.listNFT(address(mockNft), TOKEN_ID, NFT_PRICE);
     }
 
+     function test_Fail_ListNFT_WithoutApproval() public {
+        uint256 newTokenId = mockNft.mint(seller); // A new token without approval
+        
+        vm.prank(seller);
+        vm.expectRevert("Marketplace not approved for this NFT.");
+        marketplace.listNFT{value: LISTING_FEE}(address(mockNft), newTokenId, NFT_PRICE);
+    }
+
 }
