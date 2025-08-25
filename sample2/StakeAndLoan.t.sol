@@ -139,3 +139,13 @@ contract StakeAndLoanTest is Test {
             vm.startPrank(user);
         collateralToken.approve(address(stakeAndLoan), 10 ether);
         stakeAndLoan.stake(10 ether);
+        uint256 maxBorrowable = stakeAndLoan.getAccountMaxBorrowableValue(user);
+        
+        vm.expectRevert("Borrow amount exceeds collateralization ratio");
+        stakeAndLoan.borrow(maxBorrowable + 1);
+        vm.stopPrank();
+    }
+
+    /**
+     * @dev Tests the ability to get loan details.
+     */
