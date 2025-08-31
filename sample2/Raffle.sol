@@ -22,3 +22,5 @@ contract Raffle is VRFConsumerBaseV2 {
         OPEN,
         CALCULATING
     }
+
+    /* State Variables */
