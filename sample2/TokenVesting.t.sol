@@ -161,3 +161,5 @@ contract TestTokenVesting is Test {
         address[] memory beneficiaries = new address[](2);
         beneficiaries[0] = beneficiary1;
         beneficiaries[1] = beneficiary2;
+
+        uint256[] memory amounts = new uint256[](2);
