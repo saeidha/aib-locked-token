@@ -92,3 +92,4 @@ contract TestENSRegistry is Test {
     }
     
     function test_approveAndTransfer() public {
+        vm.prank(user1);
