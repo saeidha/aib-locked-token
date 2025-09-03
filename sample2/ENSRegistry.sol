@@ -116,3 +116,6 @@ contract ENSRegistry is Ownable, Pausable, IERC165 {
      * @dev Sets the TTL for a node.
      * @param node The node to update.
      * @param _ttl The new TTL value.
+     */
+    function setTTL(bytes32 node, uint64 _ttl) external whenNotPaused authorised(node) {
+        records[node].ttl = _ttl;
