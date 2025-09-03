@@ -93,3 +93,7 @@ contract TestENSRegistry is Test {
     
     function test_approveAndTransfer() public {
         vm.prank(user1);
+        registry.approve(user2, testNode);
+        assertEq(registry.getApproved(testNode), user2);
+
+        vm.prank(user2);
