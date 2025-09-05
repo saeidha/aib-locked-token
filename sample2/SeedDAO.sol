@@ -202,3 +202,4 @@ contract DAO is Ownable {
     /**
      * @notice Queues a succeeded proposal for execution, setting its timelock.
      */
+    function queue(uint proposalId) external {
