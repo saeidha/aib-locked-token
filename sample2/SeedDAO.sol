@@ -203,3 +203,5 @@ contract DAO is Ownable {
      * @notice Queues a succeeded proposal for execution, setting its timelock.
      */
     function queue(uint proposalId) external {
+        require(state(proposalId) == ProposalState.Succeeded, "DAO: Proposal has not succeeded");
+        Proposal storage p = proposals[proposalId];
