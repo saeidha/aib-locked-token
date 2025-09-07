@@ -402,3 +402,4 @@ contract W3SchoolSign is Ownable {
         emit UserProfileUpdated(msg.sender, _newName);
     }
 
+    // =============================================================
