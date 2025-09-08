@@ -342,3 +342,7 @@ contract TimeLockWallet is Ownable, Pausable {
     function isContractPaused() external view returns (bool) {
         return paused();
     }
+
+    /**
+     * @notice Calculates the time remaining until a beneficiary's funds can be withdrawn.
+     * @param _beneficiary The address of the beneficiary.
