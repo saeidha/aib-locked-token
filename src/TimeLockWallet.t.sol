@@ -71,3 +71,6 @@ contract W3SchoolSignTest is Test {
         
         vm.expectRevert("W3SS: User already registered");
         w3s.registerUser("Alice V2");
+    }
+
+    function test_AdminCanAddCourse() public {
